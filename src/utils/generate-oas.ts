@@ -28,7 +28,7 @@ const options: Options = {
 			},
 		],
 	},
-	apis: ['./src/modules/**/*.ts', './src/constants/*.ts'],
+	apis: ['./src/modules/**/*.ts', './src/constants/*.ts', './src/base/*.ts'],
 }
 
 /**

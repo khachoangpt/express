@@ -1,3 +1,4 @@
+import { OK } from '@/base/success.response'
 import { registerSchema } from '@/configs/schema'
 import { validator } from '@/utils/validator'
 import type { Request, Response } from 'express'
@@ -29,5 +30,5 @@ export default async (req: Request, res: Response) => {
 	const authService: AuthService = req.scope.resolve(AuthService.resolutionKey)
 	const validated = await validator<RegisterPayload>(registerSchema, req.body)
 	const response = await authService.register(validated)
-	res.status(200).json(response)
+	new OK(response).send(res)
 }

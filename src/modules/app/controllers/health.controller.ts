@@ -1,3 +1,4 @@
+import { OK } from '@/base/success.response'
 import type { Request, Response } from 'express'
 
 /**
@@ -19,5 +20,5 @@ import type { Request, Response } from 'express'
  *               example: OK
  */
 export default async (_req: Request, res: Response) => {
-	res.sendStatus(200)
+	new OK('OK').send(res)
 }

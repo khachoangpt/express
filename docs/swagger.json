@@ -221,6 +221,20 @@
           "editor",
           "admin"
         ]
+      },
+      "ErrorResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          },
+          "code": {
+            "type": "number"
+          }
+        }
       }
     }
   },
