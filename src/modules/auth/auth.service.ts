@@ -4,6 +4,7 @@ import { generateKeyPair } from '@/utils/generate-key-pair'
 import { generateTokenPair } from '@/utils/generate-token-pair'
 import { pick } from '@/utils/lodash'
 import bcrypt from 'bcrypt'
+import jwt from 'jsonwebtoken'
 import type KeyService from '../key/key.service'
 import { Shop } from '../shop/models/shop.model'
 import type ShopService from '../shop/shop.service'
@@ -148,6 +149,13 @@ export default class AuthService {
 		)
 
 		if (!keyFound) {
+			throw new BadRequest('Invalid refresh token')
+		}
+
+		try {
+			jwt.verify(payload.refreshToken, keyFound.publicKey)
+		} catch (_error) {
+			await this.keyService.deleteByRefreshToken(keyFound.refreshToken)
 			throw new BadRequest('Invalid refresh token')
 		}
 
