@@ -91,4 +91,15 @@ export default class KeyService {
 	): Promise<Key[]> {
 		return await keyModel.find({ userId }, projection, options).lean()
 	}
+
+	/**
+	 * Deletes a single key associated with the given refresh token.
+	 *
+	 * @param {string} refreshToken - The refresh token of the key to delete.
+	 *
+	 * @returns {Promise<DeleteResult>} Resolves when the operation is complete.
+	 */
+	async deleteByRefreshToken(refreshToken: string): Promise<DeleteResult> {
+		return await keyModel.deleteOne({ refreshToken }).lean()
+	}
 }

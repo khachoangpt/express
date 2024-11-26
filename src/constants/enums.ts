@@ -43,6 +43,7 @@ enum RoleShop {
 
 enum Header {
 	CLIENT_ID = 'x-client-id',
+	REFRESH_TOKEN = 'x-refresh-token',
 }
 
 export { DatabaseType, NodeEnv, ShopStatus, RoleShop, Header }

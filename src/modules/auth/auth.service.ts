@@ -180,4 +180,19 @@ export default class AuthService {
 			refreshToken,
 		}
 	}
+
+	/**
+	 * Logs out a shop by deleting the key pair associated with the given refresh token.
+	 *
+	 * @param {string} refreshToken - The refresh token to delete the key pair for.
+	 * @returns {Promise<boolean>} Resolves with true if the key pair was deleted successfully.
+	 * @throws {BadRequest} If the refresh token is invalid.
+	 */
+	async logout(refreshToken: string): Promise<boolean> {
+		const res = await this.keyService.deleteByRefreshToken(refreshToken)
+		if (res.deletedCount === 0) {
+			throw new BadRequest('Invalid refresh token')
+		}
+		return true
+	}
 }

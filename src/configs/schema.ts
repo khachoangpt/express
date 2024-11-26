@@ -30,5 +30,11 @@ const refreshTokenSchema = object({
 })
 type RefreshTokenSchema = z.infer<typeof refreshTokenSchema>
 
-export type { RegisterSchema, LoginSchema, RefreshTokenSchema }
-export { registerSchema, loginSchema, refreshTokenSchema }
+// logout
+const logoutSchema = object({
+	refreshToken: string(),
+})
+type LogoutSchema = z.infer<typeof logoutSchema>
+
+export type { RegisterSchema, LoginSchema, RefreshTokenSchema, LogoutSchema }
+export { registerSchema, loginSchema, refreshTokenSchema, logoutSchema }
