@@ -1,0 +1,14 @@
+@api_url=http://localhost:8000/api/v1
+
+### Health check
+GET {{api_url}}/health
+
+#### Register
+POST {{api_url}}/auth/register
+Content-Type: application/json
+
+{
+  "name": "username",
+  "email": "hoangncd3@gmail.com",
+  "password": "password"
+}
