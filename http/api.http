@@ -12,3 +12,12 @@ Content-Type: application/json
   "email": "hoangncd3@gmail.com",
   "password": "password"
 }
+
+#### Login
+POST {{api_url}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "hoangncd3@gmail.com",
+  "password": "password"
+}

@@ -1,24 +1,27 @@
-import type { ProjectionType, QueryOptions, RootFilterQuery } from 'mongoose'
+import type { ProjectionType, QueryOptions } from 'mongoose'
 import { type Shop, shopModel } from './models/shop.model'
 
 export default class ShopService {
 	static resolutionKey = 'shopService'
 
 	/**
-	 * Find one shop by filter.
+	 * Finds a shop by email.
 	 *
-	 * @param {RootFilterQuery<Shop>} [filter] - Filter to find shop.
-	 * @param {ProjectionType<Shop> | null} [projection] - Projection to select fields.
-	 * @param {QueryOptions<Shop> | null} [options] - Query options.
+	 * This method retrieves a shop document from the database using the provided email.
+	 * Optionally, it allows specifying a projection to select fields and query options.
 	 *
-	 * @returns {Promise<Shop | null>} Shop or null if not found.
+	 * @param {string} email - The email of the shop to find.
+	 * @param {ProjectionType<Shop> | null} [projection] - Fields to include or exclude from the document.
+	 * @param {QueryOptions<Shop> | null} [options] - Additional query options.
+	 *
+	 * @returns {Promise<Shop | null>} The shop document if found, otherwise null.
 	 */
-	async findOne(
-		filter?: RootFilterQuery<Shop>,
+	async findByEmail(
+		email: string,
 		projection?: ProjectionType<Shop> | null,
 		options?: QueryOptions<Shop> | null,
 	): Promise<Shop | null> {
-		return await shopModel.findOne(filter, projection, options).lean()
+		return await shopModel.findOne({ email }, projection, options).lean()
 	}
 
 	/**

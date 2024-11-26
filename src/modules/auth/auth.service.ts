@@ -7,6 +7,8 @@ import bcrypt from 'bcrypt'
 import type KeyService from '../key/key.service'
 import { Shop } from '../shop/models/shop.model'
 import type ShopService from '../shop/shop.service'
+import type { LoginPayload } from './dtos/login.payload'
+import type { LoginResponse } from './dtos/login.response'
 import type { RegisterPayload } from './dtos/register.payload'
 import type { RegisterResponse } from './dtos/register.response'
 
@@ -38,7 +40,7 @@ export default class AuthService {
 	 */
 	async register(payload: RegisterPayload): Promise<RegisterResponse> {
 		const { name, email, password } = payload
-		const shopFound = await this.shopService.findOne({ email })
+		const shopFound = await this.shopService.findByEmail(email)
 
 		if (shopFound) {
 			throw new Conflict('Email already exists')
@@ -69,6 +71,57 @@ export default class AuthService {
 
 		return {
 			shop: new Shop(pick(newShop, ['_id', 'name', 'email', 'status'])),
+			accessToken,
+			refreshToken,
+		}
+	}
+
+	/**
+	 * Login a shop.
+	 *
+	 * This method will check if the shop exists, is verified and has a valid password.
+	 * If all checks pass, it will generate a new pair of access and refresh tokens.
+	 *
+	 * @param {LoginPayload} payload - The login payload containing the email and password.
+	 *
+	 * @throws {Conflict} If the shop doesn't exist, is not verified or has an invalid password.
+	 *
+	 * @returns {Promise<LoginResponse>} The login response containing the access and refresh tokens.
+	 */
+	async login(payload: LoginPayload): Promise<LoginResponse> {
+		const shopFound = await this.shopService.findByEmail(payload.email)
+
+		if (!shopFound) {
+			throw new Conflict('Shop not found')
+		}
+
+		if (!shopFound.verify) {
+			throw new Conflict('Shop not verified')
+		}
+
+		const isPasswordValid = await bcrypt.compare(
+			payload.password,
+			shopFound.password,
+		)
+
+		if (!isPasswordValid) {
+			throw new Conflict('Invalid password')
+		}
+
+		const { privateKey, publicKey } = await generateKeyPair()
+		const { accessToken, refreshToken } = await generateTokenPair({
+			payload: { sub: shopFound._id },
+			secretKey: privateKey,
+		})
+
+		await this.keyService.create({
+			userId: shopFound._id,
+			publicKey,
+			refreshToken,
+		})
+
+		return {
+			shop: new Shop(pick(shopFound, ['_id', 'name', 'email', 'status'])),
 			accessToken,
 			refreshToken,
 		}

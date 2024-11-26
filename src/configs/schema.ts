@@ -9,6 +9,7 @@ export const envSchema = object({
 	DB_TYPE: nativeEnum(DatabaseType),
 })
 
+// register
 const registerSchema = object({
 	name: string(),
 	email: string().email(),
@@ -16,5 +17,12 @@ const registerSchema = object({
 })
 type RegisterSchema = z.infer<typeof registerSchema>
 
-export type { RegisterSchema }
-export { registerSchema }
+// login
+const loginSchema = object({
+	email: string().email(),
+	password: string().min(8).max(32),
+})
+type LoginSchema = z.infer<typeof loginSchema>
+
+export type { RegisterSchema, LoginSchema }
+export { registerSchema, loginSchema }
