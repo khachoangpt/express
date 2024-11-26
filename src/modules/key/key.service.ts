@@ -74,4 +74,21 @@ export default class KeyService {
 	): Promise<UpdateResult> {
 		return await keyModel.updateOne(filter, update, options)
 	}
+
+	/**
+	 * Finds all keys associated with the given user ID.
+	 *
+	 * @param {Types.ObjectId} userId - The ID of the user to find key for.
+	 * @param {ProjectionType<Key> | null} [projection] - Fields to include or exclude from the documents.
+	 * @param {QueryOptions<Key> | null} [options] - Additional query options.
+	 *
+	 * @returns {Promise<Key[]>} Resolves with an array of key documents if found, otherwise an empty array.
+	 */
+	async findByUserId(
+		userId: Types.ObjectId,
+		projection?: ProjectionType<Key> | null,
+		options?: QueryOptions<Key> | null,
+	): Promise<Key[]> {
+		return await keyModel.find({ userId }, projection, options).lean()
+	}
 }

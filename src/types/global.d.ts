@@ -2,6 +2,7 @@ declare global {
 	namespace Express {
 		interface Request {
 			scope: AwilixContainer
+			userId: string
 		}
 	}
 

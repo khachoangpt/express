@@ -41,4 +41,8 @@ enum RoleShop {
 	ADMIN = 'admin',
 }
 
-export { DatabaseType, NodeEnv, ShopStatus, RoleShop }
+enum Header {
+	CLIENT_ID = 'x-client-id',
+}
+
+export { DatabaseType, NodeEnv, ShopStatus, RoleShop, Header }
