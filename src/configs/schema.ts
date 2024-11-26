@@ -24,5 +24,11 @@ const loginSchema = object({
 })
 type LoginSchema = z.infer<typeof loginSchema>
 
-export type { RegisterSchema, LoginSchema }
-export { registerSchema, loginSchema }
+// refresh token
+const refreshTokenSchema = object({
+	refreshToken: string(),
+})
+type RefreshTokenSchema = z.infer<typeof refreshTokenSchema>
+
+export type { RegisterSchema, LoginSchema, RefreshTokenSchema }
+export { registerSchema, loginSchema, refreshTokenSchema }

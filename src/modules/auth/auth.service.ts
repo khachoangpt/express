@@ -1,4 +1,4 @@
-import { Conflict } from '@/base/error.response'
+import { BadRequest, Conflict } from '@/base/error.response'
 import { RoleShop } from '@/constants/enums'
 import { generateKeyPair } from '@/utils/generate-key-pair'
 import { generateTokenPair } from '@/utils/generate-token-pair'
@@ -9,6 +9,8 @@ import { Shop } from '../shop/models/shop.model'
 import type ShopService from '../shop/shop.service'
 import type { LoginPayload } from './dtos/login.payload'
 import type { LoginResponse } from './dtos/login.response'
+import type { RefreshTokenPayload } from './dtos/refresh-token.payload'
+import type { RefreshTokenResponse } from './dtos/refresh-token.response'
 import type { RegisterPayload } from './dtos/register.payload'
 import type { RegisterResponse } from './dtos/register.response'
 
@@ -122,6 +124,58 @@ export default class AuthService {
 
 		return {
 			shop: new Shop(pick(shopFound, ['_id', 'name', 'email', 'status'])),
+			accessToken,
+			refreshToken,
+		}
+	}
+
+	/**
+	 * Refreshes a shop's access token.
+	 *
+	 * This method takes a refresh token as input, checks if it exists, is not used,
+	 * and marks it as used. It then generates a new pair of access and refresh tokens,
+	 * and creates a new key pair in the database. It also removes the old key pair from the database.
+	 *
+	 * @param {RefreshTokenPayload} payload - The refresh token payload.
+	 * @returns {Promise<RefreshTokenResponse>} The response containing the new access and refresh tokens.
+	 * @throws {BadRequest} If the refresh token is invalid or has already been used.
+	 */
+	async refreshToken(
+		payload: RefreshTokenPayload,
+	): Promise<RefreshTokenResponse> {
+		const keyFound = await this.keyService.findByRefreshToken(
+			payload.refreshToken,
+		)
+
+		if (!keyFound) {
+			throw new BadRequest('Invalid refresh token')
+		}
+
+		if (keyFound.isUsed) {
+			await this.keyService.deleteByUserId(keyFound.userId)
+			throw new BadRequest('Invalid refresh token')
+		}
+
+		const { privateKey, publicKey } = await generateKeyPair()
+		const { accessToken, refreshToken } = await generateTokenPair({
+			payload: { sub: keyFound.userId },
+			secretKey: privateKey,
+		})
+
+		await this.keyService.updateOne(
+			{ _id: keyFound._id },
+			{
+				isUsed: true,
+			},
+		)
+
+		await this.keyService.create({
+			userId: keyFound.userId,
+			publicKey,
+			refreshToken,
+		})
+
+		return {
 			accessToken,
 			refreshToken,
 		}
