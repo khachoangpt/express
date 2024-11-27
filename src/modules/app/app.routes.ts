@@ -5,7 +5,6 @@ import { asyncHandler } from '@/utils/async-handler'
 import { handleError } from '@/utils/handle-error'
 import { type Express, type Request, type Response, Router } from 'express'
 import swaggerUI from 'swagger-ui-express'
-import swaggerDocument from '../../../docs/swagger.json'
 import authRoutes from '../auth/auth.routes'
 import productRoutes from '../product/product.routes'
 import healthController from './controllers/health.controller'
@@ -19,12 +18,14 @@ export default (app: Express): Router => {
 	router.get('/health', asyncHandler(healthController))
 
 	if (nodeEnv === NodeEnv.DEVELOPMENT) {
-		/* Swagger UI */
-		router.use('/docs', swaggerUI.serve, swaggerUI.setup(swaggerDocument))
+		import('../../../docs/swagger.json').then((swaggerDocument) => {
+			/* Swagger UI */
+			router.use('/docs', swaggerUI.serve, swaggerUI.setup(swaggerDocument))
 
-		/* Swagger JSON */
-		router.get('/docs.json', (_req: Request, res: Response) => {
-			res.status(statusCodes.OK).send(swaggerDocument)
+			/* Swagger JSON */
+			router.get('/docs.json', (_req: Request, res: Response) => {
+				res.status(statusCodes.OK).send(swaggerDocument)
+			})
 		})
 	}
 

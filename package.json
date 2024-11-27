@@ -5,7 +5,7 @@
 	"author": "Hoang Nguyen",
 	"license": "ISC",
 	"scripts": {
-		"dev": "tsx watch --include './src/**/*.ts' server.ts",
+		"dev": "tsx watch --include './src/**/*.ts' --exclude './docs/swagger.json' server.ts",
 		"build": "tsup",
 		"start": "NODE_ENV=production node dist/server.mjs",
 		"prepare": "husky"
