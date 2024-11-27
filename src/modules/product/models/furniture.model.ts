@@ -2,28 +2,28 @@ import { BadRequest } from '@/base/error.response'
 import { Schema, type Types, model } from 'mongoose'
 import { Product } from './product.model'
 
-const DOCUMENT_NAME = 'Electronic'
-const COLLECTION_NAME = 'Electronics'
+const DOCUMENT_NAME = 'Furniture'
+const COLLECTION_NAME = 'Furnitures'
 
 /**
  * @swagger
  * components:
  *   schemas:
- *     Electronic:
+ *     Furniture:
  *       type: object
  *       required:
- *         - manufacturer
- *         - model
- *         - color
+ *         - brand
+ *         - size
+ *         - material
  *       properties:
  *         _id:
  *           type: string
  *           format: ObjectId
- *         manufacturer:
+ *         brand:
  *           type: string
- *         model:
+ *         size:
  *           type: string
- *         color:
+ *         material:
  *           type: string
  *         shop_id:
  *           type: string
@@ -34,26 +34,26 @@ const COLLECTION_NAME = 'Electronics'
  *           type: string
  *           format: date-time
  */
-class Electronic extends Product {
-	constructor(partial: Partial<Electronic>) {
+class Furniture extends Product {
+	constructor(partial: Partial<Furniture>) {
 		super(partial)
 		Object.assign(this, partial)
 	}
 
-	manufacturer: string
-	model: string
-	color: string
+	brand: string
+	size: string
+	material: string
 	declare shop_id: Types.ObjectId
 
 	override async createProduct() {
-		const newElectronic = await electronicModel.create({
+		const newFurniture = await furnitureModel.create({
 			...this.attributes,
 			shop_id: this.shop_id,
 		})
-		if (!newElectronic) {
-			throw new BadRequest('Failed to create electronic')
+		if (!newFurniture) {
+			throw new BadRequest('Failed to create furniture')
 		}
-		const newProduct = await super.createProduct(newElectronic._id)
+		const newProduct = await super.createProduct(newFurniture._id)
 		if (!newProduct) {
 			throw new BadRequest('Failed to create product')
 		}
@@ -61,19 +61,19 @@ class Electronic extends Product {
 	}
 }
 
-const electronicSchema = new Schema<Electronic>(
+const furnitureSchema = new Schema<Furniture>(
 	{
-		manufacturer: {
+		brand: {
 			type: Schema.Types.String,
 			trim: true,
 			required: true,
 		},
-		model: {
+		size: {
 			type: Schema.Types.String,
 			trim: true,
 			required: true,
 		},
-		color: {
+		material: {
 			type: Schema.Types.String,
 			trim: true,
 			required: true,
@@ -87,6 +87,6 @@ const electronicSchema = new Schema<Electronic>(
 	{ timestamps: true, collection: COLLECTION_NAME },
 )
 
-const electronicModel = model<Electronic>(DOCUMENT_NAME, electronicSchema)
+const furnitureModel = model<Furniture>(DOCUMENT_NAME, furnitureSchema)
 
-export { electronicModel, Electronic }
+export { furnitureModel, Furniture }

@@ -55,7 +55,8 @@ class Product extends BaseModel {
 	// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 	attributes: any
 
-	async createProduct() {
+	async createProduct(id: Types.ObjectId) {
+		this._id = id
 		return await productModel.create(this)
 	}
 }

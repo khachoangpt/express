@@ -53,7 +53,7 @@ class Clothing extends Product {
 		if (!newClothing) {
 			throw new BadRequest('Failed to create clothing')
 		}
-		const newProduct = await super.createProduct()
+		const newProduct = await super.createProduct(newClothing._id)
 		if (!newProduct) {
 			throw new BadRequest('Failed to create product')
 		}

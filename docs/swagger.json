@@ -263,6 +263,40 @@
           }
         }
       },
+      "Furniture": {
+        "type": "object",
+        "required": [
+          "brand",
+          "size",
+          "material"
+        ],
+        "properties": {
+          "_id": {
+            "type": "string",
+            "format": "ObjectId"
+          },
+          "brand": {
+            "type": "string"
+          },
+          "size": {
+            "type": "string"
+          },
+          "material": {
+            "type": "string"
+          },
+          "shop_id": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
       "Product": {
         "type": "object",
         "required": [
