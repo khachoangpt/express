@@ -1,3 +1,6 @@
+import type { DatabaseType, NodeEnv } from '@/constants/enums'
+import type { AwilixContainer } from 'awilix'
+
 declare global {
 	namespace Express {
 		interface Request {
@@ -20,4 +23,5 @@ declare global {
 	}
 }
 
+// biome-ignore lint/complexity/noUselessEmptyExport: <explanation>
 export {}

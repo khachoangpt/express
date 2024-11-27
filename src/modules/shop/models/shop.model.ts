@@ -1,6 +1,6 @@
 import { ShopStatus } from '@/constants/enums'
-import { Timestamp } from '@/models/timestamp.model'
-import { Schema, type Types, model } from 'mongoose'
+import { BaseModel } from '@/models/base.model'
+import { Schema, model } from 'mongoose'
 
 const DOCUMENT_NAME = 'Shop'
 const COLLECTION_NAME = 'Shops'
@@ -51,13 +51,11 @@ const COLLECTION_NAME = 'Shops'
  *         roles:
  *           - SHOP
  */
-class Shop extends Timestamp {
+class Shop extends BaseModel {
 	constructor(partial: Partial<Shop>) {
 		super(partial)
 		Object.assign(this, partial)
 	}
-
-	_id?: Types.ObjectId
 
 	name: string
 

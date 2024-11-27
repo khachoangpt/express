@@ -6,7 +6,7 @@ import { validateOAS } from './validate-oas'
 
 const options: Options = {
 	definition: {
-		openapi: '3.0.0',
+		openapi: '3.0.1',
 		info: {
 			title: 'API documentation',
 			version: '1.0.0',
@@ -19,6 +19,15 @@ const options: Options = {
 				email: 'hoangncd3@gmail.com',
 				name: 'Hoang Nguyen',
 				url: 'https://github.com/khachoangpt',
+			},
+		},
+		components: {
+			securitySchemes: {
+				bearerAuth: {
+					type: 'http',
+					scheme: 'bearer',
+					bearerFormat: 'JWT',
+				},
 			},
 		},
 		servers: [

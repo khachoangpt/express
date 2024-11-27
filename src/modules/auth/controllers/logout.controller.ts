@@ -12,12 +12,28 @@ import type { LogoutPayload } from '../dtos/logout.payload'
  *     tags:
  *       - Auth
  *     summary: Logout a shop
+ *     security:
+ *       - bearerAuth: []
+ *     description: Logout a shop
  *     requestBody:
  *       required: true
  *       content:
  *         application/json:
  *           schema:
  *             $ref: '#/components/schemas/LogoutPayload'
+ *     parameters:
+ *       - in: header
+ *         name: x-client-id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: Shop id
+ *       - in: header
+ *         name: x-refresh-token
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: Refresh token
  *     responses:
  *       200:
  *         description: Logout successfully

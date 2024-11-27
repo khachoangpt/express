@@ -46,4 +46,21 @@ enum Header {
 	REFRESH_TOKEN = 'x-refresh-token',
 }
 
-export { DatabaseType, NodeEnv, ShopStatus, RoleShop, Header }
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     ProductType:
+ *       type: string
+ *       enum:
+ *         - electronic
+ *         - furniture
+ *         - clothing
+ */
+enum ProductType {
+	ELECTRONIC = 'electronic',
+	FURNITURE = 'furniture',
+	CLOTHING = 'clothing',
+}
+
+export { DatabaseType, NodeEnv, ShopStatus, RoleShop, Header, ProductType }

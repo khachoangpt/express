@@ -7,6 +7,7 @@ import { type Express, type Request, type Response, Router } from 'express'
 import swaggerUI from 'swagger-ui-express'
 import swaggerDocument from '../../../docs/swagger.json'
 import authRoutes from '../auth/auth.routes'
+import productRoutes from '../product/product.routes'
 import healthController from './controllers/health.controller'
 
 export default (app: Express): Router => {
@@ -28,6 +29,7 @@ export default (app: Express): Router => {
 	}
 
 	authRoutes(router)
+	productRoutes(router)
 
 	app.use(handleError)
 

@@ -1,4 +1,4 @@
-import { Timestamp } from '@/models/timestamp.model'
+import { BaseModel } from '@/models/base.model'
 import { Schema, type Types, model } from 'mongoose'
 
 const DOCUMENT_NAME = 'Key'
@@ -34,13 +34,12 @@ const COLLECTION_NAME = 'Keys'
  *           type: string
  *           format: date-time
  */
-class Key extends Timestamp {
+class Key extends BaseModel {
 	constructor(partial: Partial<Key>) {
 		super(partial)
 		Object.assign(this, partial)
 	}
 
-	_id?: Types.ObjectId
 	userId: Types.ObjectId
 	publicKey: string
 	refreshToken: string

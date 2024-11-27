@@ -1,5 +1,5 @@
-import { DatabaseType, NodeEnv } from '@/constants/enums'
-import { coerce, nativeEnum, object, string, type z } from 'zod'
+import { DatabaseType, NodeEnv, ProductType } from '@/constants/enums'
+import { any, coerce, nativeEnum, number, object, string, type z } from 'zod'
 
 // env
 export const envSchema = object({
@@ -36,5 +36,29 @@ const logoutSchema = object({
 })
 type LogoutSchema = z.infer<typeof logoutSchema>
 
-export type { RegisterSchema, LoginSchema, RefreshTokenSchema, LogoutSchema }
-export { registerSchema, loginSchema, refreshTokenSchema, logoutSchema }
+// create product
+const createProductSchema = object({
+	name: string(),
+	thumbnail: string(),
+	description: string(),
+	price: number(),
+	quantity: number(),
+	type: nativeEnum(ProductType),
+	attributes: any(),
+})
+type CreateProductSchema = z.infer<typeof createProductSchema>
+
+export type {
+	RegisterSchema,
+	LoginSchema,
+	RefreshTokenSchema,
+	LogoutSchema,
+	CreateProductSchema,
+}
+export {
+	registerSchema,
+	loginSchema,
+	refreshTokenSchema,
+	logoutSchema,
+	createProductSchema,
+}
