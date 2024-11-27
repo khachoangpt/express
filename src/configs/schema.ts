@@ -1,5 +1,19 @@
-import { DatabaseType, NodeEnv, ProductType } from '@/constants/enums'
-import { any, coerce, nativeEnum, number, object, string, type z } from 'zod'
+import {
+	DatabaseType,
+	NodeEnv,
+	ProductStatus,
+	ProductType,
+} from '@/constants/enums'
+import {
+	any,
+	array,
+	coerce,
+	nativeEnum,
+	number,
+	object,
+	string,
+	type z,
+} from 'zod'
 
 // env
 export const envSchema = object({
@@ -45,6 +59,10 @@ const createProductSchema = object({
 	quantity: number(),
 	type: nativeEnum(ProductType),
 	attributes: any(),
+	ratingAverage: number().optional(),
+	slug: string().optional(),
+	variants: array(any()).optional(),
+	status: nativeEnum(ProductStatus).optional(),
 })
 type CreateProductSchema = z.infer<typeof createProductSchema>
 

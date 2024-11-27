@@ -192,6 +192,21 @@
           },
           "attributes": {
             "$ref": "#/components/schemas/AnyValue"
+          },
+          "ratingAverage": {
+            "type": "number"
+          },
+          "slug": {
+            "type": "string"
+          },
+          "variants": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AnyValue"
+            }
+          },
+          "status": {
+            "$ref": "#/components/schemas/ProductStatus"
           }
         }
       },
@@ -334,6 +349,32 @@
           "shop_id": {
             "type": "string",
             "format": "ObjectId"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "attributes": {
+            "$ref": "#/components/schemas/AnyValue"
+          },
+          "slug": {
+            "type": "string"
+          },
+          "ratingAverage": {
+            "type": "number"
+          },
+          "variants": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AnyValue"
+            }
+          },
+          "status": {
+            "$ref": "#/components/schemas/ProductStatus"
           }
         }
       },
@@ -418,6 +459,13 @@
           "electronic",
           "furniture",
           "clothing"
+        ]
+      },
+      "ProductStatus": {
+        "type": "string",
+        "enum": [
+          "draft",
+          "published"
         ]
       },
       "ErrorResponse": {

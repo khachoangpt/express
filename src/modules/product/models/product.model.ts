@@ -1,6 +1,7 @@
-import { ProductType } from '@/constants/enums'
+import { ProductStatus, ProductType } from '@/constants/enums'
 import { BaseModel } from '@/models/base.model'
 import { Schema, type Types, model } from 'mongoose'
+import slugify from 'slugify'
 
 const DOCUMENT_NAME = 'Product'
 const COLLECTION_NAME = 'Products'
@@ -38,6 +39,24 @@ const COLLECTION_NAME = 'Products'
  *         shop_id:
  *           type: string
  *           format: ObjectId
+ *         createdAt:
+ *           type: string
+ *           format: date-time
+ *         updatedAt:
+ *           type: string
+ *           format: date-time
+ *         attributes:
+ *           $ref: '#/components/schemas/AnyValue'
+ *         slug:
+ *           type: string
+ *         ratingAverage:
+ *           type: number
+ *         variants:
+ *           type: array
+ *           items:
+ *             $ref: '#/components/schemas/AnyValue'
+ *         status:
+ *           $ref: '#/components/schemas/ProductStatus'
  */
 class Product extends BaseModel {
 	constructor(partial: Partial<Product>) {
@@ -54,9 +73,14 @@ class Product extends BaseModel {
 	shop_id: Types.ObjectId
 	// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 	attributes: any
+	slug: string
+	ratingAverage: number
+	variants: [Schema.Types.Mixed]
+	status: ProductStatus
 
 	async createProduct(id: Types.ObjectId) {
 		this._id = id
+		this.slug = this.slug ?? slugify(this.name, { lower: true, trim: true })
 		return await productModel.create(this)
 	}
 }
@@ -102,6 +126,27 @@ const productSchema = new Schema<Product>(
 		},
 		attributes: {
 			type: Schema.Types.Mixed,
+		},
+		slug: {
+			type: Schema.Types.String,
+			unique: true,
+		},
+		ratingAverage: {
+			type: Schema.Types.Number,
+			default: 5,
+			min: [1, 'Rating must be above 1.0'],
+			max: [5, 'Rating must be below 5.0'],
+			set: (value: number) => Math.round(value * 10) / 10,
+		},
+		variants: {
+			type: [Schema.Types.Mixed],
+			default: [],
+		},
+		status: {
+			type: Schema.Types.String,
+			enum: [ProductStatus.DRAFT, ProductStatus.PUBLISHED],
+			default: ProductStatus.DRAFT,
+			index: true,
 		},
 	},
 	{ timestamps: true, collection: COLLECTION_NAME },

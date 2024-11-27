@@ -63,4 +63,27 @@ enum ProductType {
 	CLOTHING = 'clothing',
 }
 
-export { DatabaseType, NodeEnv, ShopStatus, RoleShop, Header, ProductType }
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     ProductStatus:
+ *       type: string
+ *       enum:
+ *         - draft
+ *         - published
+ */
+enum ProductStatus {
+	DRAFT = 'draft',
+	PUBLISHED = 'published',
+}
+
+export {
+	DatabaseType,
+	NodeEnv,
+	ShopStatus,
+	RoleShop,
+	Header,
+	ProductType,
+	ProductStatus,
+}

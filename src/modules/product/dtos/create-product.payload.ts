@@ -1,4 +1,4 @@
-import type { ProductType } from '@/constants/enums'
+import type { ProductStatus, ProductType } from '@/constants/enums'
 
 /**
  * @swagger
@@ -37,6 +37,16 @@ import type { ProductType } from '@/constants/enums'
  *           $ref: '#/components/schemas/ProductType'
  *         attributes:
  *           $ref: '#/components/schemas/AnyValue'
+ *         ratingAverage:
+ *           type: number
+ *         slug:
+ *           type: string
+ *         variants:
+ *           type: array
+ *           items:
+ *             $ref: '#/components/schemas/AnyValue'
+ *         status:
+ *           $ref: '#/components/schemas/ProductStatus'
  */
 export class CreateProductPayload {
 	name: string
@@ -47,4 +57,9 @@ export class CreateProductPayload {
 	type: ProductType
 	// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 	attributes: any
+	ratingAverage?: number
+	slug?: string
+	// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+	variants?: any[]
+	status?: ProductStatus
 }

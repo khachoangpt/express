@@ -60,6 +60,7 @@ const keySchema = new Schema<Key>(
 		refreshToken: {
 			type: Schema.Types.String,
 			required: true,
+			unique: true,
 		},
 		isUsed: {
 			type: Schema.Types.Boolean,
